@@ -79,7 +79,7 @@ const bindLineAndGate = (line, gate, adsite) => {
 // connect current line and adsite;
 let currentConnect = () => {};
 const bindAdsiteOnLine = (adsite, oldline) => {
-  const Id = setTimeout(() => adsite.remove(), 80);
+  const Id = setTimeout(() => adsite.remove(), 200);
   adsite.sdom.addEventListener('mouseenter', () => {
     clearTimeout(Id);
     currentConnect = (line) => {

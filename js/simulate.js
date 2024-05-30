@@ -12,7 +12,7 @@ const States = (initState) => {
       }
     },
     has (state) {
-      states.some(s => {
+      return states.some(s => {
         return s.every((v, i) => v === state[i])
       });
     },
@@ -26,11 +26,13 @@ const States = (initState) => {
   });
 }
 
+
 export const updateByClick = (ingate, value) => {
   if (outCurState) {
     const states = States(outCurState);
     const chgGate = outCurCircuit.gates.find(({ gate }) => gate === ingate);
-    updateLoop(states, outCurState, [ chgGate ]);
+    console.log('click simulated');
+    updateLoopH(states, outCurState, [ chgGate ]);
   }
 }
 
@@ -43,11 +45,20 @@ export const simulate = (circuit) => {
     w.wire.clear();
   }
   outCurCircuit = circuit;
-  updateLoop(states, curState, inputs);
+  updateLoopH(states, curState, inputs);
 }
 
 let outCurState = undefined;
 let outCurCircuit = undefined;
+
+const updateLoopH = async (states, curState, inputs) => {
+  try {
+    await updateLoop(states, curState, inputs);
+  } catch (err) {
+    console.log(err);
+    outCurState = outCurState.map(_ => -1);
+  }
+}
 
 const updateLoop = async (states, curState, inputs) => {
   let chgGates = inputs;
